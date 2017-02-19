@@ -1,0 +1,6 @@
+[submodule "common/shell-config"]
+	path = common/shell-config
+	url = git@github.com:starain/shell-config.git
+[submodule "common/emacs-config"]
+	path = common/emacs-config
+	url = git@github.com:starain/emacs-config.git
