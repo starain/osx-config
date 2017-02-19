@@ -17,8 +17,8 @@ install() {
     install_base
     # Installing packages
     cd $HOME
-    #mkdir homebrew && curl -L https://github.com/Homebrew/homebrew/tarball/master | tar xz --strip 1 -C homebrew
-    #$HOME/homebrew/bin/brew install zsh zsh-completions emacs
+    mkdir homebrew && curl -L https://github.com/Homebrew/homebrew/tarball/master | tar xz --strip 1 -C homebrew
+    $HOME/homebrew/bin/brew install zsh zsh-completions emacs gpg gpg-agent tmux
 
     # Setup bashrc and zshrc
     for f in "bashrc" "zshrc"
