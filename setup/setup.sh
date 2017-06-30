@@ -1,5 +1,6 @@
 #!/bin/bash
 CONFIG_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+TARGET_DIR="$HOME"
 MAGIC_ANCHOR="Setup by setup_osx.sh"
 COMMON_DIR="$CONFIG_DIR/common"
 COMMON_MODULES="$(ls $COMMON_DIR)"
@@ -16,9 +17,10 @@ install_base() {
 install() {
     install_base
     # Installing packages
-    cd $HOME
+    cd $TARGET_DIR
     mkdir homebrew && curl -L https://github.com/Homebrew/homebrew/tarball/master | tar xz --strip 1 -C homebrew
-    $HOME/homebrew/bin/brew install zsh zsh-completions emacs gpg gpg-agent tmux
+    $TARGET_DIR/homebrew/bin/brew update
+    $TARGET_DIR/homebrew/bin/brew install zsh zsh-completions emacs gpg gpg-agent tmux
 
     # Setup bashrc and zshrc
     for f in "bashrc" "zshrc"
@@ -41,7 +43,7 @@ install() {
     done
 
     # Use zsh
-    sudo dscl . -create $HOME UserShell $HOME/homebrew/bin/zsh
+    sudo dscl . -create $TARGET_DIR UserShell $TARGET_DIR/homebrew/bin/zsh
 }
 uninstall_base() {
     for d in $COMMON_MODULES
@@ -52,7 +54,7 @@ uninstall_base() {
 uninstall() {
     uninstall_base
     TMP_FILE=$(mktemp)
-    for f in "$HOME/.bashrc" "$HOME/.zshrc" "$HOME/.emacs"
+    for f in "$TARGET_DIR/.bashrc" "$TARGET_DIR/.zshrc" "$TARGET_DIR/.emacs"
     do
         echo "Removing config from $f"
         sed "/$MAGIC_ANCHOR/,/$MAGIC_ANCHOR/d" $f > $TMP_FILE && mv $TMP_FILE $f
@@ -64,7 +66,7 @@ uninstall() {
             find ~/.$f -type l -delete
         fi
     done
-    sudo dscl . -create $HOME UserShell /bin/bash
+    sudo dscl . -create $TARGET_DIR UserShell /bin/bash
 }
 case "$1" in
 'install')
